@@ -1,0 +1,20 @@
+Copiar el contenido de este ZIP sobre la raíz del proyecto PetID.
+
+Archivos nuevos:
+- services/supabaseStorage.js
+- middlewares/uploadPetPhoto.js
+- docs/SUPABASE_STORAGE.md
+- .env.storage.example
+
+Archivos reemplazados:
+- controllers/petController.js
+- routes/pets.js
+- static/views/pets/form.ejs
+- static/views/public/pet.ejs
+- package.json
+
+Después:
+1) agregar al .env las variables de .env.storage.example
+2) crear el bucket público pet-photos en Supabase
+3) ejecutar npm install
+4) reiniciar npm run dev

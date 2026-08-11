@@ -1,0 +1,48 @@
+<%- include('../common/head', { title }) %>
+<section class="page"><div class="container grid grid-2">
+  <section class="card">
+    <div class="pet-profile">
+      <% if (pet.photo_url) { %>
+        <img
+          class="pet-avatar"
+          src="<%= pet.photo_url %>"
+          alt="Foto de <%= pet.name %>"
+          loading="eager"
+          referrerpolicy="no-referrer"
+        >
+      <% } else { %>
+        <div class="pet-avatar" style="display:grid;place-items:center;font-size:48px">🐾</div>
+      <% } %>
+
+      <div>
+        <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>">● <%= pet.is_lost ? 'MASCOTA PERDIDA' : 'Mascota segura' %></span>
+        <h1 class="pet-name"><%= pet.name %></h1>
+        <div class="muted"><%= [pet.breed, pet.species, pet.sex].filter(Boolean).join(' · ') %></div>
+      </div>
+    </div>
+
+    <div class="info-list">
+      <% if (pet.color) { %><div class="info-row"><span>Color</span><strong><%= pet.color %></strong></div><% } %>
+      <% if (pet.medical_conditions) { %><div class="info-row"><span>Información médica</span><strong><%= pet.medical_conditions %></strong></div><% } %>
+      <% if (pet.notes) { %><div class="info-row"><span>Observación</span><strong><%= pet.notes %></strong></div><% } %>
+    </div>
+  </section>
+
+  <aside class="card">
+    <h2><%= pet.is_lost ? `🚨 ${pet.name} está perdido` : `¿Encontraste a ${pet.name}?` %></h2>
+    <p class="muted">Puedes contactar a su familia directamente. No necesitas instalar ninguna aplicación.</p>
+    <div class="actions">
+      <% const wa = (pet.whatsapp || pet.phone || '').replace(/\D/g,''); %>
+      <% if (wa) { %><a class="btn btn-success" href="https://wa.me/<%= wa %>" target="_blank" rel="noopener">💬 WhatsApp</a><% } %>
+      <% if (pet.phone) { %><a class="btn btn-primary" href="tel:<%= pet.phone %>">📞 Llamar</a><% } %>
+    </div>
+
+    <% if (pet.contact_name) { %>
+      <div style="margin-top:24px;padding:16px;background:var(--surface2);border-radius:16px">
+        <strong>Contacto principal</strong>
+        <div class="muted" style="margin-top:4px"><%= pet.contact_name %><%= pet.relationship ? ` · ${pet.relationship}` : '' %></div>
+      </div>
+    <% } %>
+  </aside>
+</div></section>
+<%- include('../common/footer') %>

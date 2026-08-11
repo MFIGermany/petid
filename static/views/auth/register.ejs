@@ -1,0 +1,13 @@
+<%- include('../common/head', { title }) %>
+<div class="login-wrap"><div class="container"><section class="card login-card" style="margin:auto">
+  <div class="logo-center"><span class="brand-mark">🐾</span><h2 style="margin:14px 0 6px">Crea tu cuenta</h2><p class="muted">Empieza a gestionar la identidad digital de tus mascotas.</p></div>
+  <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
+  <form method="post" action="/register">
+    <div class="field"><label>Nombre</label><input name="name" required></div>
+    <div class="field" style="margin-top:14px"><label>Correo electrónico</label><input name="email" type="email" required></div>
+    <div class="field" style="margin-top:14px"><label>Teléfono</label><input name="phone" placeholder="+55..."></div>
+    <div class="field" style="margin-top:14px"><label>Contraseña</label><input name="password" type="password" minlength="6" required></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:20px">Crear cuenta</button>
+  </form>
+</section></div></div>
+<%- include('../common/footer') %>

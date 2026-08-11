@@ -1,0 +1,50 @@
+-- Migración idempotente desde la estructura PetID PHP ya creada.
+-- Ejecutar en Supabase SQL Editor si ya existen users/pets/pet_contacts/tags/tag_scans.
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(40);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS species VARCHAR(60);
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS breed VARCHAR(120);
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS sex VARCHAR(30);
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS birth_date DATE;
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS color VARCHAR(120);
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS photo_url TEXT;
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS medical_conditions TEXT;
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS notes TEXT;
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS is_lost BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE pets ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+ALTER TABLE pet_contacts ADD COLUMN IF NOT EXISTS relationship VARCHAR(80);
+ALTER TABLE pet_contacts ADD COLUMN IF NOT EXISTS phone VARCHAR(40);
+ALTER TABLE pet_contacts ADD COLUMN IF NOT EXISTS whatsapp VARCHAR(40);
+ALTER TABLE pet_contacts ADD COLUMN IF NOT EXISTS priority INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE pet_contacts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+ALTER TABLE tags ADD COLUMN IF NOT EXISTS activation_code VARCHAR(40);
+ALTER TABLE tags ADD COLUMN IF NOT EXISTS public_code VARCHAR(40);
+ALTER TABLE tags ADD COLUMN IF NOT EXISTS status VARCHAR(20) NOT NULL DEFAULT 'inactive';
+ALTER TABLE tags ADD COLUMN IF NOT EXISTS activated_at TIMESTAMPTZ;
+ALTER TABLE tags ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+UPDATE tags
+SET activation_code = UPPER(substr(md5(random()::text || clock_timestamp()::text || id::text), 1, 12))
+WHERE activation_code IS NULL OR activation_code = '';
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_tags_activation_code ON tags(activation_code);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_tags_public_code ON tags(public_code) WHERE public_code IS NOT NULL;
+ALTER TABLE tags ALTER COLUMN activation_code SET NOT NULL;
+
+ALTER TABLE tag_scans ADD COLUMN IF NOT EXISTS source VARCHAR(20) NOT NULL DEFAULT 'unknown';
+ALTER TABLE tag_scans ADD COLUMN IF NOT EXISTS ip_address VARCHAR(80);
+ALTER TABLE tag_scans ADD COLUMN IF NOT EXISTS user_agent TEXT;
+
+CREATE TABLE IF NOT EXISTS app_sessions (
+  sid VARCHAR NOT NULL COLLATE "default",
+  sess JSON NOT NULL,
+  expire TIMESTAMP(6) NOT NULL,
+  CONSTRAINT app_sessions_pkey PRIMARY KEY (sid)
+);
+CREATE INDEX IF NOT EXISTS idx_app_sessions_expire ON app_sessions(expire);
+
+ALTER TABLE app_sessions ENABLE ROW LEVEL SECURITY;

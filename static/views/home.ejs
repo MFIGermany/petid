@@ -1,0 +1,28 @@
+<%- include('common/head', { title }) %>
+<section class="page">
+  <div class="container grid grid-2">
+  <section class="card hero-card">
+    <span class="eyebrow">Identificación inteligente</span>
+    <h1>Una chapita. Una historia. Un camino de vuelta a casa.</h1>
+    <p class="lead">PetID conecta una chapita NFC/QR con un perfil digital actualizable para que cualquier persona pueda identificar a tu mascota y contactarte rápidamente.</p>
+    <div class="nav-actions" style="margin-top:24px">
+      <% if (data.currentUser) { %>
+        <a class="btn btn-primary" href="/dashboard">Ir a mis mascotas</a>
+        <a class="btn btn-light" href="/tags/activate">Activar chapita</a>
+      <% } else { %>
+        <a class="btn btn-primary" href="/register">Comenzar</a>
+        <a class="btn btn-light" href="/p/DEMO123">Ver ejemplo</a>
+      <% } %>
+    </div>
+  </section>
+  <section class="card">
+    <div class="tag-preview"><div><div style="font-size:42px">🐾</div><strong>TOBBY</strong><small>Acerque su teléfono</small></div></div>
+    <ul class="check-list" style="margin-top:26px">
+      <li><span class="check">✓</span><div><strong>NFC + QR</strong><div class="muted">Dos formas rápidas de abrir el perfil.</div></div></li>
+      <li><span class="check">✓</span><div><strong>Datos actualizables</strong><div class="muted">Modifica contactos sin reemplazar la chapita.</div></div></li>
+      <li><span class="check">✓</span><div><strong>Modo perdido</strong><div class="muted">Prioriza la información importante cuando más se necesita.</div></div></li>
+    </ul>
+  </section>
+</div>
+</section>
+<%- include('common/footer') %>

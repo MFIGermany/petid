@@ -80,8 +80,9 @@
         <div class="tag-list-item">
           <div class="tag-list-main">
             <div>
-              <div class="muted" style="font-size:.82rem;margin-bottom:4px">PetID</div>
-              <strong class="code"><%= tag.public_code ? tag.public_code : 'Sem código público' %></strong>
+              <div class="muted" style="font-size:.82rem;margin-bottom:4px">PetID:
+                <strong class="code"><%= tag.public_code ? tag.public_code : 'Sem código público' %></strong>
+              </div>
             </div>
 
             <span class="status <%= tag.status === 'active' ? 'status-tag-active' : 'status-tag-inactive' %>">

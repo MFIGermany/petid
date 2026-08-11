@@ -11,7 +11,7 @@ exports.index = async (req, res, next) => {
     }, { pets: 0, activeTags: 0, scans: 0 });
 
     res.render('dashboard/index', {
-      title: 'Mis mascotas',
+      title: 'Meus pets',
       pets,
       stats
     });

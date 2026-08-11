@@ -1,3 +1,3 @@
 exports.index = (req, res) => {
-  res.render('home', { title: 'PetID - Identificación digital para mascotas' });
+  res.render('home', { title: 'PetID - Identificação digital para pets' });
 };

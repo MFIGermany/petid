@@ -1,47 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content=""/>
-	<meta name="keywords" content="" />
-	<title>Serviço de Identificação Digital de Animais de Estimação</title>
-	<link href="<%= data.baseUrl %>/img/favico.png" rel="shortcut icon" type="image/ico" />
-	
-	<link href="<%= data.baseUrl %>/css/petid.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="<%= data.baseUrl %>/js/jquery.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serviço de identificação digital para pets com NFC e QR Code">
+    <meta name="keywords" content="pet, identificação, NFC, QR Code, cachorro, gato">
+    <title><%= title ? `${title} | PetID` : 'PetID — Identificação Digital para Pets' %></title>
+    <link href="<%= data.baseUrl %>/img/favico.png" rel="shortcut icon" type="image/ico">
+    <link href="<%= data.baseUrl %>/css/petid.css" rel="stylesheet" type="text/css">
+    <script src="<%= data.baseUrl %>/js/jquery.js"></script>
+    <script src="<%= data.baseUrl %>/js/petid.js" defer></script>
 </head>
+<body>
 <header class="topbar">
     <div class="container nav">
-        <a class="brand" href="/">
+        <a class="brand" href="/" aria-label="PetID - Página inicial">
             <span class="brand-mark">🐾</span>
             PetID
         </a>
 
-        <div class="nav-actions">
-
+        <div class="nav-actions nav-actions-desktop">
             <% if (data.currentUser) { %>
-				<a class="btn btn-light" href="/dashboard">
-                    Ir a mis mascotas
-                </a>
-                <a class="btn btn-light" href="/tags/activate">
-                    Activar chapita
-                </a>
-
+                <a class="btn btn-light" href="/dashboard">Meus pets</a>
+                <a class="btn btn-light" href="/tags/activate">Ativar plaquinha</a>
                 <form action="/logout" method="POST" style="margin:0;">
-                    <button type="submit" class="btn btn-light">
-                        Salir
-                    </button>
+                    <button type="submit" class="btn btn-light">Sair</button>
                 </form>
-
             <% } else { %>
-
-                <a class="btn btn-light" href="/login">
-                    Entrar
-                </a>
-
+                <a class="btn btn-light" href="/login">Entrar</a>
             <% } %>
-
         </div>
+
+        <button
+            class="mobile-menu-toggle"
+            type="button"
+            aria-label="Abrir menu"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
+            data-mobile-menu-toggle
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Menu principal" data-mobile-menu hidden>
+        <div class="container mobile-menu-inner">
+            <% if (data.currentUser) { %>
+                <a class="mobile-menu-link" href="/dashboard">Meus pets</a>
+                <a class="mobile-menu-link" href="/tags/activate">Ativar plaquinha</a>
+                <form action="/logout" method="POST" class="mobile-menu-form">
+                    <button type="submit" class="mobile-menu-link mobile-menu-button">Sair</button>
+                </form>
+            <% } else { %>
+                <a class="mobile-menu-link" href="/login">Entrar</a>
+                <a class="mobile-menu-link mobile-menu-link-primary" href="/register">Criar conta</a>
+            <% } %>
+        </div>
+    </nav>
 </header>

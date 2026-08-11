@@ -6,8 +6,8 @@ exports.petProfile = async (req, res, next) => {
     const profile = await Tag.findPublic(req.params.code);
     if (!profile) {
       return res.status(404).render('common/error', {
-        title: 'Identificación no encontrada',
-        message: 'Esta chapita no está activa o el código no existe.'
+        title: 'Identificação não encontrada',
+        message: 'Esta plaquinha não está ativa ou o código não existe.'
       });
     }
 

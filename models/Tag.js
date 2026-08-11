@@ -64,8 +64,8 @@ async function activeByUser(userId) {
 }
 
 /**
- * Reserva una chapita virgen con su URL pública definitiva.
- * La generación sucede exclusivamente en el backend.
+ * Reserva uma plaquinha nova com sua URL pública definitiva.
+ * A geração acontece exclusivamente no backend.
  */
 async function createBlank() {
   const maxAttempts = 8;
@@ -84,18 +84,18 @@ async function createBlank() {
 
       return rows[0];
     } catch (err) {
-      // PostgreSQL unique_violation: una colisión extremadamente improbable.
+      // PostgreSQL unique_violation: uma colisão extremamente improvável.
       if (err.code !== '23505') {
         throw err;
       }
     }
   }
 
-  throw new Error('No fue posible generar un código único para la chapita.');
+  throw new Error('Não foi possível gerar um código único para a plaquinha.');
 }
 
 /**
- * Activa una chapita previamente reservada por el servidor.
+ * Ativa uma plaquinha previamente reservada pelo servidor.
  * El navegador NO decide ni activation_code ni public_code.
  */
 async function activateReserved({ tagId, petId, userId }) {
@@ -110,7 +110,7 @@ async function activateReserved({ tagId, petId, userId }) {
     );
 
     if (!owned.rowCount) {
-      throw new Error('Mascota no encontrada.');
+      throw new Error('Pet não encontrado.');
     }
 
     const reserved = await client.query(
@@ -119,21 +119,21 @@ async function activateReserved({ tagId, petId, userId }) {
     );
 
     if (!reserved.rowCount) {
-      throw new Error('La chapita reservada ya no está disponible. Recarga la página.');
+      throw new Error('A plaquinha reservada não está mais disponível. Recarregue a página.');
     }
 
     const newTag = reserved.rows[0];
 
     if (newTag.status !== 'inactive') {
-      throw new Error('La nueva chapita ya no está disponible para activación. Recarga la página.');
+      throw new Error('A nova plaquinha não está mais disponível para ativação. Recarregue a página.');
     }
 
     if (newTag.pet_id) {
-      throw new Error('La nueva chapita ya está vinculada a otra mascota.');
+      throw new Error('A nova plaquinha já está vinculada a outro pet.');
     }
 
     if (!newTag.public_code) {
-      throw new Error('La chapita reservada no tiene código público. Recarga la página.');
+      throw new Error('A plaquinha reservada não possui código público. Recarregue a página.');
     }
 
     const previous = await client.query(

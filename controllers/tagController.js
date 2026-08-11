@@ -18,8 +18,8 @@ async function getPetsWithTags(userId) {
 }
 
 /**
- * Mantiene una única chapita pendiente durante la sesión para evitar
- * crear una fila nueva cada vez que el usuario refresca la página.
+ * Mantém uma única plaquinha pendente durante a sessão para evitar
+ * criar uma nova linha sempre que o usuário atualizar a página.
  */
 async function getOrCreatePendingTag(req) {
   if (req.session.pendingTagId) {
@@ -45,7 +45,7 @@ exports.activateForm = async (req, res, next) => {
     ]);
 
     res.render('tags/activate', {
-      title: 'Activar chapita',
+      title: 'Ativar plaquinha',
       selectedPetId: req.query.pet_id || '',
       pets,
       newTag,
@@ -68,16 +68,16 @@ exports.activate = async (req, res, next) => {
       ]);
 
       return res.status(422).render('tags/activate', {
-        title: 'Activar chapita',
+        title: 'Ativar plaquinha',
         selectedPetId: '',
         pets,
         newTag,
-        error: 'Selecciona la mascota a la que deseas vincular la chapita.'
+        error: 'Selecione o pet ao qual deseja vincular a plaquinha.'
       });
     }
 
     if (!tagId) {
-      throw new Error('La reserva de la nueva chapita expiró. Recarga la página para generar otra.');
+      throw new Error('A reserva da nova plaquinha expirou. Recarregue a página para gerar outra.');
     }
 
     const result = await Tag.activateReserved({
@@ -86,20 +86,20 @@ exports.activate = async (req, res, next) => {
       userId: req.session.user.id
     });
 
-    // La reserva ya fue consumida. La próxima visita generará una nueva.
+    // A reserva já foi utilizada. A próxima visita gerará uma nova.
     delete req.session.pendingTagId;
 
     req.session.flash = {
       type: 'success',
       message: result.replaced
-        ? 'Chapita reemplazada correctamente. La identificación anterior fue deshabilitada.'
-        : 'Chapita activada correctamente.'
+        ? 'Plaquinha substituída com sucesso. A identificação anterior foi desativada.'
+        : 'Plaquinha ativada com sucesso.'
     };
 
     res.redirect(`/p/${result.tag.public_code}`);
   } catch (err) {
     try {
-      // Si la reserva dejó de ser válida, se elimina para que GET genere otra.
+      // Se a reserva deixou de ser válida, ela é removida para que o GET gere outra.
       const pending = req.session.pendingTagId
         ? await Tag.findById(req.session.pendingTagId)
         : null;
@@ -114,7 +114,7 @@ exports.activate = async (req, res, next) => {
       ]);
 
       return res.status(422).render('tags/activate', {
-        title: 'Activar chapita',
+        title: 'Ativar plaquinha',
         selectedPetId: req.body.pet_id || '',
         pets,
         newTag,
@@ -126,8 +126,8 @@ exports.activate = async (req, res, next) => {
   }
 };
 
-// Útil durante desarrollo/fabricación. En producción debe manejarse desde
-// un panel administrativo o proceso de inventario, no desde el cliente.
+// Útil durante desenvolvimento/fabricação. Em produção, deve ser gerenciado por
+// um painel administrativo ou processo de estoque, e não pelo cliente.
 exports.devCreateBlank = async (req, res, next) => {
   try {
     if (process.env.NODE_ENV === 'production') {

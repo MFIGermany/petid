@@ -11,11 +11,11 @@ let client = null;
 
 function getClient() {
   if (!SUPABASE_URL) {
-    throw new Error('Falta SUPABASE_URL en el archivo .env');
+    throw new Error('Falta SUPABASE_URL no arquivo .env');
   }
 
   if (!SUPABASE_SECRET_KEY) {
-    throw new Error('Falta SUPABASE_SECRET_KEY en el archivo .env');
+    throw new Error('Falta SUPABASE_SECRET_KEY no arquivo .env');
   }
 
   if (!client) {
@@ -46,7 +46,7 @@ async function uploadPetPhoto(file, userId) {
 
   const extension = extensionForMime(file.mimetype);
   if (!extension) {
-    throw new Error('Formato de imagen no permitido. Usa JPG, PNG o WEBP.');
+    throw new Error('Formato de imagem não permitido. Use JPG, PNG ou WEBP.');
   }
 
   const objectPath = `users/${userId}/pets/${randomUUID()}.${extension}`;
@@ -61,7 +61,7 @@ async function uploadPetPhoto(file, userId) {
     });
 
   if (error) {
-    throw new Error(`No se pudo subir la foto a Supabase Storage: ${error.message}`);
+    throw new Error(`Não foi possível enviar a foto para o Supabase Storage: ${error.message}`);
   }
 
   const { data } = supabase.storage
@@ -70,7 +70,7 @@ async function uploadPetPhoto(file, userId) {
 
   if (!data?.publicUrl) {
     await removeObject(objectPath).catch(() => {});
-    throw new Error('Supabase no devolvió la URL pública de la foto.');
+    throw new Error('O Supabase não retornou a URL pública da foto.');
   }
 
   return {
@@ -88,7 +88,7 @@ async function removeObject(objectPath) {
     .remove([objectPath]);
 
   if (error) {
-    throw new Error(`No se pudo eliminar la foto anterior: ${error.message}`);
+    throw new Error(`Não foi possível excluir a foto anterior: ${error.message}`);
   }
 }
 

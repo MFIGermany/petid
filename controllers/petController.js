@@ -13,7 +13,7 @@ function formUserName(req) {
 
 exports.newForm = (req, res) => {
   res.render('pets/form', {
-    title: 'Nueva mascota',
+    title: 'Novo pet',
     pet: null,
     contact: null,
     tags: [],
@@ -28,7 +28,7 @@ exports.create = async (req, res, next) => {
   try {
     if (!req.body.name || !req.body.species) {
       return res.status(422).render('pets/form', {
-        title: 'Nueva mascota',
+        title: 'Novo pet',
         pet: req.body,
         contact: {
           name: req.body.contact_name,
@@ -36,7 +36,7 @@ exports.create = async (req, res, next) => {
           whatsapp: req.body.whatsapp
         },
         tags: [],
-        error: 'El nombre y la especie son obligatorios.',
+        error: 'O nome e a espécie são obrigatórios.',
         formUserName: formUserName(req)
       });
     }
@@ -55,7 +55,7 @@ exports.create = async (req, res, next) => {
 
     req.session.flash = {
       type: 'success',
-      message: 'Mascota creada correctamente.'
+      message: 'Pet cadastrado com sucesso.'
     };
 
     res.redirect(`/pets/${pet.id}/edit`);
@@ -73,8 +73,8 @@ exports.editForm = async (req, res, next) => {
 
     if (!pet) {
       return res.status(404).render('common/error', {
-        title: 'Mascota no encontrada',
-        message: 'No tienes acceso a esta mascota.'
+        title: 'Pet não encontrado',
+        message: 'Você não tem acesso a este pet.'
       });
     }
 
@@ -101,7 +101,7 @@ exports.update = async (req, res, next) => {
 
   try {
     const currentPet = await Pet.findOwned(req.params.id, req.session.user.id);
-    if (!currentPet) return res.status(404).send('Mascota no encontrada');
+    if (!currentPet) return res.status(404).send('Pet não encontrado');
 
     if (!req.body.name || !req.body.species) {
       const [contact, tags] = await Promise.all([
@@ -114,7 +114,7 @@ exports.update = async (req, res, next) => {
         pet: { ...currentPet, ...req.body },
         contact,
         tags,
-        error: 'El nombre y la especie son obligatorios.',
+        error: 'O nome e a espécie são obrigatórios.',
         formUserName: formUserName(req)
       });
     }
@@ -138,26 +138,26 @@ exports.update = async (req, res, next) => {
       if (uploadedPhoto?.objectPath) {
         await removeObject(uploadedPhoto.objectPath).catch(() => {});
       }
-      return res.status(404).send('Mascota no encontrada');
+      return res.status(404).send('Pet não encontrado');
     }
 
     await Contact.upsertPrimary(pet.id, req.body);
 
-    // La BD ya apunta a la nueva foto: ahora sí podemos borrar la anterior.
+    // O banco já aponta para a nova foto; agora podemos excluir a anterior.
     if (uploadedPhoto && currentPet.photo_url && currentPet.photo_url !== uploadedPhoto.publicUrl) {
       await removeByPublicUrl(currentPet.photo_url).catch((storageError) => {
-        console.warn('No se pudo borrar la foto anterior de Storage:', storageError.message);
+        console.warn('Não foi possível excluir a foto anterior do Storage:', storageError.message);
       });
     }
 
     req.session.flash = {
       type: 'success',
-      message: 'Cambios guardados.'
+      message: 'Alterações salvas.'
     };
 
     res.redirect(`/pets/${pet.id}/edit`);
   } catch (err) {
-    // Si falló antes de persistir la nueva URL, evita dejar un archivo huérfano.
+    // Se falhou antes de persistir a nova URL, evita deixar um arquivo órfão.
     if (uploadedPhoto?.objectPath) {
       await removeObject(uploadedPhoto.objectPath).catch(() => {});
     }
@@ -168,13 +168,13 @@ exports.update = async (req, res, next) => {
 exports.toggleLost = async (req, res, next) => {
   try {
     const pet = await Pet.toggleLost(req.params.id, req.session.user.id);
-    if (!pet) return res.status(404).send('Mascota no encontrada');
+    if (!pet) return res.status(404).send('Pet não encontrado');
 
     req.session.flash = {
       type: pet.is_lost ? 'warning' : 'success',
       message: pet.is_lost
-        ? `${pet.name} fue marcado como perdido.`
-        : `${pet.name} fue marcado como encontrado.`
+        ? `${pet.name} foi marcado como perdido.`
+        : `${pet.name} foi marcado como encontrado.`
     };
 
     res.redirect('/dashboard');
@@ -186,20 +186,20 @@ exports.toggleLost = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
   try {
     const pet = await Pet.findOwned(req.params.id, req.session.user.id);
-    if (!pet) return res.status(404).send('Mascota no encontrada');
+    if (!pet) return res.status(404).send('Pet não encontrado');
 
     const removed = await Pet.remove(req.params.id, req.session.user.id);
-    if (!removed) return res.status(404).send('Mascota no encontrada');
+    if (!removed) return res.status(404).send('Pet não encontrado');
 
     if (pet.photo_url) {
       await removeByPublicUrl(pet.photo_url).catch((storageError) => {
-        console.warn('No se pudo borrar la foto de Storage:', storageError.message);
+        console.warn('Não foi possível excluir a foto do Storage:', storageError.message);
       });
     }
 
     req.session.flash = {
       type: 'success',
-      message: 'Mascota eliminada.'
+      message: 'Pet excluído.'
     };
 
     res.redirect('/dashboard');

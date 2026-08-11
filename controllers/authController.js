@@ -13,7 +13,7 @@ exports.login = async (req, res, next) => {
     if (!user || !(await bcrypt.compare(password || '', user.password_hash))) {
       return res.status(422).render('auth/login', {
         title: 'Entrar',
-        error: 'Correo o contraseña incorrectos.'
+        error: 'E-mail ou senha incorretos.'
       });
     }
 
@@ -27,7 +27,7 @@ exports.login = async (req, res, next) => {
 };
 
 exports.registerForm = (req, res) => {
-  res.render('auth/register', { title: 'Crear cuenta', error: null });
+  res.render('auth/register', { title: 'Criar conta', error: null });
 };
 
 exports.register = async (req, res, next) => {
@@ -35,15 +35,15 @@ exports.register = async (req, res, next) => {
     const { name, email, password, phone } = req.body;
     if (!name || !email || !password || password.length < 6) {
       return res.status(422).render('auth/register', {
-        title: 'Crear cuenta',
-        error: 'Completa nombre, correo y una contraseña de al menos 6 caracteres.'
+        title: 'Criar conta',
+        error: 'Preencha nome, e-mail e uma senha com pelo menos 6 caracteres.'
       });
     }
 
     if (await User.findByEmail(email)) {
       return res.status(422).render('auth/register', {
-        title: 'Crear cuenta',
-        error: 'Ya existe una cuenta con ese correo.'
+        title: 'Criar conta',
+        error: 'Já existe uma conta com esse e-mail.'
       });
     }
 

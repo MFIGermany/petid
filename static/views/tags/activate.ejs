@@ -4,32 +4,32 @@
   <div class="container grid grid-2">
 
     <section class="card hero-card">
-      <span class="eyebrow">Identificación PetID</span>
-      <h1 id="previewTitle">Nueva chapita</h1>
+      <span class="eyebrow">Identificação PetID</span>
+      <h1 id="previewTitle">Nova plaquinha</h1>
       <p class="lead" id="previewDescription">
-        PetID ya generó el código único que tendrá esta identificación.
+        O PetID já gerou o código único desta identificação.
       </p>
 
       <div class="tag-preview" style="margin-top:28px">
         <div>
           <div style="font-size:38px">NFC</div>
           <strong id="previewCode"><%= newTag.public_code %></strong>
-          <small id="previewLabel">Nueva identificación</small>
+          <small id="previewLabel">Nova identificação</small>
         </div>
       </div>
 
       <div id="replacementPreview" style="display:none;margin-top:22px;padding:16px;background:#fff7ed;border-radius:16px;color:#9a3412">
-        <strong>Chapita actual</strong>
+        <strong>Plaquinha atual</strong>
         <div style="margin-top:6px">
           Código: <strong id="oldCodeText"></strong>
         </div>
         <div style="margin-top:8px;font-size:.9rem">
-          Al confirmar, esta identificación quedará deshabilitada y será sustituida por la nueva.
+          Ao confirmar, esta identificação será desativada e substituída pela nova.
         </div>
       </div>
 
       <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,.75);border-radius:16px">
-        <strong>URL NFC/QR nueva</strong>
+        <strong>Nova URL NFC/QR Code</strong>
         <div class="muted" style="margin-top:8px;word-break:break-all">
           <%= data.baseUrl %>/p/<%= newTag.public_code %>
         </div>
@@ -42,21 +42,21 @@
       <% } %>
 
       <% if (!pets.length) { %>
-        <h2>Primero crea una mascota</h2>
-        <p class="muted">Necesitamos un perfil antes de poder vincular una chapita.</p>
-        <a class="btn btn-primary" href="/pets/new">Crear mascota</a>
+        <h2>Primeiro cadastre um pet</h2>
+        <p class="muted">É necessário ter um perfil antes de vincular uma plaquinha.</p>
+        <a class="btn btn-primary" href="/pets/new">Cadastrar pet</a>
       <% } else { %>
 
-        <h2>¿Para qué mascota es?</h2>
+        <h2>Para qual pet é esta plaquinha?</h2>
         <p class="muted">
-          Selecciona la mascota. Si ya tiene una identificación activa, PetID la tratará como un reemplazo.
+          Selecione o pet. Se ele já tiver uma identificação ativa, o PetID fará a substituição da plaquinha.
         </p>
 
         <form method="post" action="/tags/activate" id="activateTagForm">
           <div class="field">
-            <label for="pet_id">Mascota</label>
+            <label for="pet_id">Pet</label>
             <select name="pet_id" id="pet_id" required>
-              <option value="">Selecciona...</option>
+              <option value="">Selecione...</option>
 
               <% pets.forEach(p => { %>
                 <option
@@ -66,7 +66,7 @@
                   data-pet-name="<%= p.name %>"
                   <%= String(selectedPetId || '') === String(p.id) ? 'selected' : '' %>
                 >
-                  <%= p.name %> — <%= p.activeTag ? 'chapita activa' : 'sin chapita' %>
+                  <%= p.name %> — <%= p.activeTag ? 'plaquinha ativa' : 'sem plaquinha' %>
                 </option>
               <% }) %>
             </select>
@@ -75,7 +75,7 @@
           <div id="tagStatusBox" style="display:none;margin-top:14px;padding:16px;border-radius:16px"></div>
 
           <div class="field" style="margin-top:18px">
-            <label for="new_public_code">Código de la nueva chapita</label>
+            <label for="new_public_code">Código da nova plaquinha</label>
             <input
               id="new_public_code"
               type="text"
@@ -86,12 +86,12 @@
               style="text-transform:uppercase;letter-spacing:.18em;font-weight:800;background:#f8fafc;cursor:not-allowed"
             >
             <div class="helper">
-              Generado automáticamente por PetID. No puede ser editado por el usuario.
+              Gerado automaticamente pelo PetID. Este código não pode ser editado.
             </div>
           </div>
 
           <div class="field" style="margin-top:18px">
-            <label>Dirección que se grabará en NFC/QR</label>
+            <label>Endereço que será gravado no NFC/QR Code</label>
             <input
               type="text"
               value="<%= data.baseUrl %>/p/<%= newTag.public_code %>"
@@ -103,7 +103,7 @@
           </div>
 
           <button id="activateButton" class="btn btn-primary" style="width:100%;margin-top:18px">
-            Activar chapita
+            Ativar plaquinha
           </button>
         </form>
       <% } %>
@@ -133,11 +133,11 @@
     if (!option || !option.value) {
       box.style.display = 'none';
       replacementPreview.style.display = 'none';
-      previewTitle.textContent = 'Nueva chapita';
-      previewDescription.textContent = 'PetID ya generó el código único que tendrá esta identificación.';
+      previewTitle.textContent = 'Nova plaquinha';
+      previewDescription.textContent = 'O PetID já gerou o código único desta identificação.';
       previewCode.textContent = newCode;
-      previewLabel.textContent = 'Nueva identificación';
-      button.textContent = 'Activar chapita';
+      previewLabel.textContent = 'Nova identificação';
+      button.textContent = 'Ativar plaquinha';
       button.className = 'btn btn-primary';
       button.style.width = '100%';
       button.style.marginTop = '18px';
@@ -146,7 +146,7 @@
 
     const hasTag = option.dataset.hasTag === '1';
     const oldCode = option.dataset.publicCode || '';
-    const petName = option.dataset.petName || 'esta mascota';
+    const petName = option.dataset.petName || 'este pet';
 
     box.style.display = 'block';
 
@@ -154,38 +154,38 @@
       box.style.background = '#fff7ed';
       box.style.color = '#9a3412';
       box.innerHTML = `
-        <strong>${petName} ya tiene una chapita activa.</strong>
+        <strong>${petName} já tem uma plaquinha ativa.</strong>
         <div style="margin-top:5px">
-          Confirmar esta operación deshabilitará la anterior y activará el nuevo código <strong>${newCode}</strong>.
+          Ao confirmar, a plaquinha anterior será desativada e o novo código será ativado <strong>${newCode}</strong>.
         </div>`;
 
       replacementPreview.style.display = 'block';
       oldCodeText.textContent = oldCode;
 
-      // En renovación, la tarjeta izquierda muestra la identificación antigua.
-      previewTitle.textContent = `Chapita actual de ${petName}`;
-      previewDescription.textContent = 'Esta es la identificación que será sustituida al confirmar la renovación.';
+      // Na substituição, o cartão à esquerda mostra a identificação atual.
+      previewTitle.textContent = `Plaquinha atual de ${petName}`;
+      previewDescription.textContent = 'Esta é a identificação que será substituída ao confirmar a troca.';
       previewCode.textContent = oldCode || '—';
-      previewLabel.textContent = 'Identificación actual';
+      previewLabel.textContent = 'Identificação atual';
 
-      button.textContent = 'Reemplazar chapita';
+      button.textContent = 'Substituir plaquinha';
       button.className = 'btn btn-warning';
     } else {
       box.style.background = '#d1fae5';
       box.style.color = '#047857';
       box.innerHTML = `
-        <strong>${petName} todavía no tiene una chapita activa.</strong>
-        <div style="margin-top:5px">Se vinculará el código <strong>${newCode}</strong> a su perfil.</div>`;
+        <strong>${petName} ainda não tem uma plaquinha ativa.</strong>
+        <div style="margin-top:5px">O código <strong>${newCode}</strong> será vinculado ao perfil.</div>`;
 
       replacementPreview.style.display = 'none';
       oldCodeText.textContent = '';
 
-      previewTitle.textContent = `Nueva chapita para ${petName}`;
-      previewDescription.textContent = 'Esta será su primera identificación digital PetID.';
+      previewTitle.textContent = `Nova plaquinha para ${petName}`;
+      previewDescription.textContent = 'Esta será a primeira identificação digital PetID deste pet.';
       previewCode.textContent = newCode;
-      previewLabel.textContent = 'Nueva identificación';
+      previewLabel.textContent = 'Nova identificação';
 
-      button.textContent = 'Activar chapita';
+      button.textContent = 'Ativar plaquinha';
       button.className = 'btn btn-primary';
     }
 

@@ -17,14 +17,14 @@ function randomCode(length = 10) {
 }
 
 /**
- * Código público que formará parte de la URL NFC/QR.
+ * Código público que fará parte da URL NFC/QR Code.
  */
 function randomPublicCode() {
   return randomCode(10);
 }
 
 /**
- * Código interno de inventario/activación. El cliente no necesita escribirlo.
+ * Código interno de estoque/ativação. O cliente não precisa digitá-lo.
  */
 function randomActivationCode() {
   return randomCode(12);

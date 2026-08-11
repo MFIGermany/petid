@@ -13,7 +13,7 @@ const uploadPetPhoto = multer({
   },
   fileFilter: (req, file, cb) => {
     if (!allowedTypes.has(file.mimetype)) {
-      return cb(new Error('Formato de imagen no permitido. Usa JPG, PNG o WEBP.'));
+      return cb(new Error('Formato de imagem não permitido. Use JPG, PNG ou WEBP.'));
     }
 
     cb(null, true);

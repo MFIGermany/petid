@@ -2,7 +2,7 @@
   "name": "petid",
   "version": "1.0.0",
   "private": true,
-  "description": "Servicio de Identificación Digital para Mascotas - Express + EJS + PostgreSQL/Supabase",
+  "description": "Serviço de Identificação Digital para Pets - Express + EJS + PostgreSQL/Supabase",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",

@@ -51,21 +51,21 @@ app.use('/', publicRoutes);
 
 app.use((req, res) => {
   res.status(404).render('common/error', {
-    title: 'Página no encontrada',
-    message: 'La página solicitada no existe.'
+    title: 'Página não encontrada',
+    message: 'A página solicitada não existe.'
   });
 });
 
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).render('common/error', {
-    title: 'Error',
+    title: 'Erro',
     message: process.env.NODE_ENV === 'production'
-      ? 'Ocurrió un error inesperado.'
-      : (err.message || 'Ocurrió un error inesperado.')
+      ? 'Ocorreu um erro inesperado.'
+      : (err.message || 'Ocorreu um erro inesperado.')
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`PetID iniciado en ${process.env.APP_URL || `http://localhost:${PORT}`}`);
+  console.log(`PetID iniciado em ${process.env.APP_URL || `http://localhost:${PORT}`}`);
 });

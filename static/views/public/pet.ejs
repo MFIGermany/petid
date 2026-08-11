@@ -26,10 +26,34 @@
     </div>
 
     <div class="info-list">
-      <% if (pet.color) { %><div class="info-row"><span>Cor</span><strong><%= pet.color %></strong></div><% } %>
-      <% if (pet.medical_conditions) { %><div class="info-row"><span>Informações médicas</span><strong><%= pet.medical_conditions %></strong></div><% } %>
-      <% if (pet.notes) { %><div class="info-row"><span>Observação</span><strong><%= pet.notes %></strong></div><% } %>
-    </div>
+      <div class="info-row">
+          <span>Cor</span>
+          <strong>
+              <%= pet.color?.trim()
+                  ? pet.color
+                  : 'Cor não informada.' %>
+          </strong>
+      </div>
+
+      <div class="info-row">
+          <span>Informações médicas</span>
+          <strong>
+              <%= pet.medical_conditions?.trim()
+                  ? pet.medical_conditions
+                  : 'Nenhuma condição médica importante informada.' %>
+          </strong>
+      </div>
+
+      <div class="info-row">
+          <span>Observação</span>
+          <strong>
+              <%= pet.notes?.trim()
+                  ? pet.notes
+                  : 'Nenhuma observação adicional informada.' %>
+          </strong>
+      </div>
+
+  </div>
   </section>
 
   <aside class="card">

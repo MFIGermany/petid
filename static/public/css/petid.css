@@ -48,3 +48,44 @@ label{font-size:.9rem;font-weight:750}input,select,textarea{width:100%;border:1p
   .nav{min-height:64px}
   .brand{min-width:0}
 }
+
+
+/* Estados de pet e plaquinhas */
+.pet-statuses{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:7px;
+}
+.status-tag-active{
+  color:#3730a3;
+  background:#e0e7ff;
+}
+.status-tag-inactive{
+  color:#667085;
+  background:#f2f4f7;
+  border:1px solid #e4e7ec;
+}
+
+/* Histórico de plaquinhas no formulário do pet */
+.tag-list-item{
+  padding:16px 0;
+  border-bottom:1px solid var(--border);
+}
+.tag-list-item:last-of-type{
+  border-bottom:0;
+}
+.tag-list-main{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+@media(max-width:620px){
+  .tag-list-main{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+}

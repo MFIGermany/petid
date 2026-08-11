@@ -14,7 +14,17 @@
       <article class="card">
         <div class="pet-mini">
           <% if (pet.photo_url) { %><img src="<%= pet.photo_url %>" alt="<%= pet.name %>"><% } else { %><div class="pet-avatar" style="width:70px;height:70px;border-radius:20px;display:grid;place-items:center;font-size:30px">🐾</div><% } %>
-          <div><h3><%= pet.name %></h3><span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>"><%= pet.is_lost ? 'Perdido' : 'Seguro' %></span></div>
+          <div>
+            <h3><%= pet.name %></h3>
+            <div class="pet-statuses">
+              <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>">
+                <%= pet.is_lost ? 'Perdido' : 'Seguro' %>
+              </span>
+              <span class="status <%= Number(pet.active_tags || 0) > 0 ? 'status-tag-active' : 'status-tag-inactive' %>">
+                <%= Number(pet.active_tags || 0) > 0 ? 'Plaquinha ativa' : 'Plaquinha inativa' %>
+              </span>
+            </div>
+          </div>
         </div>
         <div class="actions">
           <a class="btn btn-light" href="/pets/<%= pet.id %>/edit">Editar dados</a>

@@ -77,8 +77,31 @@
       <h2>Plaquinhas vinculadas</h2>
       <% if (!tags.length) { %><p class="muted">Ainda não há plaquinhas vinculadas.</p><% } %>
       <% tags.forEach(tag => { %>
-        <div class="info-row"><span>PetID</span><strong><%= tag.public_code ? tag.public_code : 'Não ativada' %></strong></div>
-        <% if (tag.public_code) { %><div style="margin-top:10px"><a class="btn btn-light" href="/p/<%= tag.public_code %>" target="_blank">Ver perfil público</a></div><% } %>
+        <div class="tag-list-item">
+          <div class="tag-list-main">
+            <div>
+              <div class="muted" style="font-size:.82rem;margin-bottom:4px">PetID</div>
+              <strong class="code"><%= tag.public_code ? tag.public_code : 'Sem código público' %></strong>
+            </div>
+
+            <span class="status <%= tag.status === 'active' ? 'status-tag-active' : 'status-tag-inactive' %>">
+              <%= tag.status === 'active' ? 'Ativa' : 'Inativa' %>
+            </span>
+          </div>
+
+          <% if (tag.status === 'active' && tag.public_code) { %>
+            <div style="margin-top:14px">
+              <a
+                class="btn btn-light"
+                href="/p/<%= tag.public_code %>"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver perfil público
+              </a>
+            </div>
+          <% } %>
+        </div>
       <% }) %>
       <div style="margin-top:18px"><a class="btn btn-primary" href="/tags/activate">Ativar uma plaquinha</a></div>
     </section>

@@ -1,6 +1,6 @@
 <%- include('../common/head', { title }) %>
 <%
-  const speciesPt = pet.species === 'Perro' ? 'Cão' : (['Otra','Otro'].includes(pet.species) ? 'Outro' : pet.species);
+  const speciesPt = ['Perro','Cachorro'].includes(pet.species) ? 'Cão' : (['Otra','Otro'].includes(pet.species) ? 'Outro' : pet.species);
   const sexPt = pet.sex === 'Hembra' ? 'Fêmea' : pet.sex;
 %>
 <section class="page">

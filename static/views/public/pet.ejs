@@ -19,7 +19,7 @@
       <% } %>
       <div style="margin-left:-5px;">
         <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>"><%= pet.is_lost ? 'PET PERDIDO' : 'Pet seguro' %></span>
-        <h1 class="pet-name" style="margin-top:5px;"><%= pet.name %></h1>
+        <h1 class="pet-name" style="margin:5px 0 0;"><%= pet.name %></h1>
         <div class="muted"><%= [pet.breed, speciesPt, sexPt].filter(Boolean).join(' · ') %></div>
       </div>
     </div>

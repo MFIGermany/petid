@@ -1,15 +1,12 @@
 <%- include('../common/head', { title }) %>
-
 <section class="page">
   <div class="container grid grid-2">
-
     <section class="card hero-card">
       <span class="eyebrow">Identificação PetID</span>
       <h1 id="previewTitle">Nova plaquinha</h1>
       <p class="lead" id="previewDescription">
         O PetID já gerou o código único desta identificação.
       </p>
-
       <div class="tag-preview" style="margin-top:28px">
         <div>
           <div style="font-size:38px">NFC</div>
@@ -17,7 +14,6 @@
           <small id="previewLabel">Nova identificação</small>
         </div>
       </div>
-
       <div id="replacementPreview" style="display:none;margin-top:22px;padding:16px;background:#fff7ed;border-radius:16px;color:#9a3412">
         <strong>Plaquinha atual</strong>
         <div style="margin-top:6px">
@@ -27,7 +23,6 @@
           Ao confirmar, esta identificação será desativada e substituída pela nova.
         </div>
       </div>
-
       <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,.75);border-radius:16px">
         <strong>Nova URL NFC</strong>
         <div class="muted" style="margin-top:8px;word-break:break-all">
@@ -35,29 +30,24 @@
         </div>
       </div>
     </section>
-
     <section class="card">
       <% if (error) { %>
         <div class="flash flash-error"><%= error %></div>
       <% } %>
-
       <% if (!pets.length) { %>
         <h2>Primeiro cadastre um pet</h2>
         <p class="muted">É necessário ter um perfil antes de vincular uma plaquinha.</p>
         <a class="btn btn-primary" href="/pets/new">Cadastrar pet</a>
       <% } else { %>
-
         <h2>Para qual pet é esta plaquinha?</h2>
         <p class="muted">
           Selecione o pet. Se ele já tiver uma identificação ativa, o PetID fará a substituição da plaquinha.
         </p>
-
         <form method="post" action="/tags/activate" id="activateTagForm">
           <div class="field">
             <label for="pet_id">Pet</label>
             <select name="pet_id" id="pet_id" required>
               <option value="">Selecione...</option>
-
               <% pets.forEach(p => { %>
                 <option
                   value="<%= p.id %>"
@@ -71,9 +61,7 @@
               <% }) %>
             </select>
           </div>
-
           <div id="tagStatusBox" style="display:none;margin-top:14px;padding:16px;border-radius:16px"></div>
-
           <div class="field" style="margin-top:18px">
             <label for="new_public_code">Código da nova plaquinha</label>
             <input
@@ -89,7 +77,6 @@
               Gerado automaticamente pelo PetID. Este código não pode ser editado.
             </div>
           </div>
-
           <div class="field" style="margin-top:18px">
             <label>Endereço que será gravado no NFC</label>
             <input
@@ -101,17 +88,14 @@
               style="background:#f8fafc;cursor:not-allowed"
             >
           </div>
-
           <button id="activateButton" class="btn btn-primary" style="width:100%;margin-top:18px">
             Ativar plaquinha
           </button>
         </form>
       <% } %>
     </section>
-
   </div>
 </section>
-
 <script>
 (function () {
   const select = document.getElementById('pet_id');
@@ -197,5 +181,4 @@
   refreshState();
 })();
 </script>
-
 <%- include('../common/footer') %>

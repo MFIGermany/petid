@@ -1,42 +1,68 @@
 <%- include('../common/head', { title }) %>
-<section class="page"><div class="container">
-  <div class="dashboard-header">
-    <div><span class="eyebrow">Painel do tutor</span><h1 style="margin-top:10px">Olá, <%= data.currentUser.name %> 👋</h1><p class="muted">Gerencie seus pets, plaquinhas e o modo perdido por aqui.</p></div>
-  </div>
-  <section class="grid stats">
-    <div class="card"><div class="muted">Pets</div><div class="kpi"><%= stats.pets %></div><small class="muted">Perfis cadastrados</small></div>
-    <div class="card"><div class="muted">Plaquinhas ativas</div><div class="kpi"><%= stats.activeTags %></div><small class="muted">Vinculadas</small></div>
-    <div class="card"><div class="muted">Leituras neste mês</div><div class="kpi"><%= stats.scans %></div><small class="muted">NFC ou link</small></div>
-  </section>
-
-  <section class="grid pet-cards">
-    <% pets.forEach((pet) => { %>
-      <article class="card">
-        <div class="pet-mini">
-          <% if (pet.photo_url) { %><img src="<%= pet.photo_url %>" alt="<%= pet.name %>"><% } else { %><div class="pet-avatar" style="width:70px;height:70px;border-radius:20px;display:grid;place-items:center;font-size:30px">🐾</div><% } %>
-          <div>
-            <h3><%= pet.name %></h3>
-            <div class="pet-statuses">
-              <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>">
-                <%= pet.is_lost ? 'Perdido' : 'Seguro' %>
-              </span>
-              <span class="status <%= Number(pet.active_tags || 0) > 0 ? 'status-tag-active' : 'status-tag-inactive' %>">
-                <%= Number(pet.active_tags || 0) > 0 ? 'Plaquinha ativa' : 'Plaquinha inativa' %>
-              </span>
+<section class="page">
+  <div class="container">
+    <div class="dashboard-header">
+      <div>
+        <span class="eyebrow">Painel do tutor</span>
+        <h1 style="margin-top:10px">Olá, <%= data.currentUser.name %> 👋</h1>
+        <p class="muted">Gerencie seus pets, plaquinhas e o modo perdido por aqui.</p>
+      </div>
+    </div>
+    <section class="grid stats">
+      <div class="card">
+        <div class="muted">Pets</div>
+        <div class="kpi"><%= stats.pets %></div>
+        <small class="muted">Perfis cadastrados</small>
+      </div>
+      <div class="card">
+        <div class="muted">Plaquinhas ativas</div>
+        <div class="kpi"><%= stats.activeTags %></div>
+        <small class="muted">Vinculadas</small>
+      </div>
+      <div class="card">
+        <div class="muted">Leituras neste mês</div>
+        <div class="kpi"><%= stats.scans %></div>
+        <small class="muted">NFC ou link</small>
+      </div>
+    </section>
+    <section class="grid pet-cards">
+      <% pets.forEach((pet) => { %>
+        <article class="card">
+          <div class="pet-mini">
+            <% if (pet.photo_url) { %>
+            <img src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+            <% } else { %>
+            <div class="pet-avatar" style="width:70px;height:70px;border-radius:20px;display:grid;place-items:center;font-size:30px">🐾</div>
+            <% } %>
+            <div>
+              <h3><%= pet.name %></h3>
+              <div class="pet-statuses">
+                <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>">
+                  <%= pet.is_lost ? 'Perdido' : 'Seguro' %>
+                </span>
+                <span class="status <%= Number(pet.active_tags || 0) > 0 ? 'status-tag-active' : 'status-tag-inactive' %>">
+                  <%= Number(pet.active_tags || 0) > 0 ? 'Plaquinha ativa' : 'Plaquinha inativa' %>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="actions">
-          <a class="btn btn-light" href="/pets/<%= pet.id %>/edit">Editar dados</a>
-          <form method="post" action="/pets/<%= pet.id %>/toggle-lost">
-            <button class="btn <%= pet.is_lost ? 'btn-success' : 'btn-danger' %>"><%= pet.is_lost ? 'Marcar como encontrado' : 'Marcar como perdido' %></button>
-          </form>
+          <div class="actions">
+            <a class="btn btn-light" href="/pets/<%= pet.id %>/edit">Editar dados</a>
+            <form method="post" action="/pets/<%= pet.id %>/toggle-lost">
+              <button class="btn <%= pet.is_lost ? 'btn-success' : 'btn-danger' %>"><%= pet.is_lost ? 'Marcar como encontrado' : 'Marcar como perdido' %></button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+      <article class="card" style="display:grid;place-items:center;text-align:center;min-height:220px">
+        <div>
+          <div style="font-size:42px">＋</div>
+          <h3>Novo pet</h3>
+          <p class="muted"></p>
+          <a class="btn btn-primary" href="/pets/new">Adicionar</a>
         </div>
       </article>
-    <% }) %>
-    <article class="card" style="display:grid;place-items:center;text-align:center;min-height:220px">
-      <div><div style="font-size:42px">＋</div><h3>Novo pet</h3><p class="muted"></p><a class="btn btn-primary" href="/pets/new">Adicionar</a></div>
-    </article>
-  </section>
-</div></section>
+    </section>
+  </div>
+</section>
 <%- include('../common/footer') %>

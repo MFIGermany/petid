@@ -1,13 +1,35 @@
 <%- include('../common/head', { title }) %>
-<div class="login-wrap"><div class="container"><section class="card login-card" style="margin:auto">
-  <div class="logo-center"><span class="brand-mark">🐾</span><h2 style="margin:14px 0 6px">Crie sua conta</h2><p class="muted">Comece a gerenciar a identificação digital dos seus pets.</p></div>
-  <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
-  <form method="post" action="/register">
-    <div class="field"><label>Nome</label><input name="name" required></div>
-    <div class="field" style="margin-top:14px"><label>E-mail</label><input name="email" type="email" required></div>
-    <div class="field" style="margin-top:14px"><label>Telefone</label><input name="phone" placeholder="+55..."></div>
-    <div class="field" style="margin-top:14px"><label>Senha</label><input name="password" type="password" minlength="6" required></div>
-    <button class="btn btn-primary" style="width:100%;margin-top:20px">Criar conta</button>
-  </form>
-</section></div></div>
+<div class="login-wrap">
+  <div class="container">
+    <section class="card login-card" style="margin:auto">
+      <div class="logo-center">
+        <span class="brand-mark">🐾</span>
+        <h2 style="margin:14px 0 6px">Crie sua conta</h2>
+        <p class="muted">Comece a gerenciar a identificação digital dos seus pets.</p>
+      </div>
+      <% if (error) { %>
+      <div class="flash flash-error"><%= error %></div>
+      <% } %>
+      <form method="post" action="/register">
+        <div class="field">
+          <label>Nome</label>
+          <input name="name" required>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label>E-mail</label>
+          <input name="email" type="email" required>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label>Telefone</label>
+          <input name="phone" placeholder="+55...">
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label>Senha</label>
+          <input name="password" type="password" minlength="6" required>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:20px">Criar conta</button>
+      </form>
+    </section>
+  </div>
+</div>
 <%- include('../common/footer') %>

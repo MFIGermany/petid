@@ -20,12 +20,21 @@
 
       <div>
         <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>"><%= pet.is_lost ? 'PET PERDIDO' : 'Pet seguro' %></span>
+        <p></p>
         <h1 class="pet-name"><%= pet.name %></h1>
-        <div class="muted"><%= [pet.breed, speciesPt, sexPt].filter(Boolean).join(' · ') %></div>
+        <div class="muted"><%= [pet.breed, sexPt].filter(Boolean).join(' · ') %></div>
       </div>
     </div>
 
     <div class="info-list">
+      <div class="info-row">
+          <span>Espécie</span>
+          <strong>
+              <%= speciesPt?.trim()
+                  ? speciesPt
+                  : 'Espécie não informada.' %>
+          </strong>
+      </div>
       <div class="info-row">
           <span>Cor</span>
           <strong>
@@ -34,7 +43,6 @@
                   : 'Cor não informada.' %>
           </strong>
       </div>
-
       <div class="info-row">
           <span>Informações médicas</span>
           <strong>
@@ -43,7 +51,6 @@
                   : 'Nenhuma condição médica importante informada.' %>
           </strong>
       </div>
-
       <div class="info-row">
           <span>Observação</span>
           <strong>
@@ -52,10 +59,8 @@
                   : 'Nenhuma observação adicional informada.' %>
           </strong>
       </div>
-
   </div>
   </section>
-
   <aside class="card">
     <h2><%= pet.is_lost ? `🚨 ${pet.name} está perdido` : `Encontrou ${pet.name}?` %></h2>
     <p class="muted">Você pode entrar em contato diretamente com a família. Não é necessário instalar nenhum aplicativo.</p>
@@ -64,7 +69,6 @@
       <% if (wa) { %><a class="btn btn-success" href="https://wa.me/<%= wa %>" target="_blank" rel="noopener">💬 WhatsApp</a><% } %>
       <% if (pet.phone) { %><a class="btn btn-primary" href="tel:<%= pet.phone %>">📞 Ligar</a><% } %>
     </div>
-
     <% if (pet.contact_name) { %>
       <div style="margin-top:24px;padding:16px;background:var(--surface2);border-radius:16px">
         <strong>Contato principal</strong>

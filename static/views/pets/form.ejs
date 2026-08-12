@@ -3,7 +3,7 @@
   <div style="margin-bottom:22px">
     <span class="eyebrow">Perfil do pet</span>
     <h1 style="margin-top:10px"><%= pet && pet.id ? `Dados de ${pet.name}` : 'Novo pet' %></h1>
-    <p class="muted">Esses dados formam o perfil que poderá ser aberto por NFC ou QR Code.</p>
+    <p class="muted">Esses dados formam o perfil que poderá ser aberto por NFC ou link.</p>
   </div>
 
   <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>

@@ -1,6 +1,6 @@
 <%- include('../common/head', { title }) %>
 <%
-  const speciesPt = pet.species === 'Perro' ? 'Cachorro' : (['Otra','Otro'].includes(pet.species) ? 'Outro' : pet.species);
+  const speciesPt = pet.species === 'Perro' ? 'Cão' : (['Otra','Otro'].includes(pet.species) ? 'Outro' : pet.species);
   const sexPt = pet.sex === 'Hembra' ? 'Fêmea' : pet.sex;
 %>
 <section class="page"><div class="container grid grid-2">
@@ -17,24 +17,13 @@
       <% } else { %>
         <div class="pet-avatar" style="display:grid;place-items:center;font-size:48px">🐾</div>
       <% } %>
-
-      <div>
+      <div style="margin-left:-5px;">
         <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>"><%= pet.is_lost ? 'PET PERDIDO' : 'Pet seguro' %></span>
-        <p></p>
-        <h1 class="pet-name"><%= pet.name %></h1>
-        <div class="muted"><%= [pet.breed, sexPt].filter(Boolean).join(' · ') %></div>
+        <h1 class="pet-name" style="margin-top:5px;"><%= pet.name %></h1>
+        <div class="muted"><%= [pet.breed, speciesPt, sexPt].filter(Boolean).join(' · ') %></div>
       </div>
     </div>
-
     <div class="info-list">
-      <div class="info-row">
-          <span>Espécie</span>
-          <strong>
-              <%= speciesPt?.trim()
-                  ? speciesPt
-                  : 'Espécie não informada.' %>
-          </strong>
-      </div>
       <div class="info-row">
           <span>Cor</span>
           <strong>

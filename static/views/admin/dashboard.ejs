@@ -1,0 +1,113 @@
+<%- include('head', { title }) %>
+<% const fmtDate = (value) => value ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' }).format(new Date(value)) : '—'; %>
+<section class="page admin-page">
+  <div class="container">
+    <div class="admin-page-header">
+      <div>
+        <span class="eyebrow">Visão geral</span>
+        <h1>Painel administrativo</h1>
+        <p class="muted">Acompanhe clientes, pets, plaquinhas e leituras em um só lugar.</p>
+      </div>
+      <a class="btn btn-primary" href="/admin/clients">Gerenciar clientes</a>
+    </div>
+    <% if (flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <section class="admin-stats-grid">
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Clientes</div>
+        <div class="kpi"><%= stats.clients %></div>
+        <small class="muted">+<%= stats.new_clients_this_month %> neste mês</small>
+      </article>
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Pets cadastrados</div>
+        <div class="kpi"><%= stats.pets %></div>
+        <small class="muted"><%= stats.lost_pets %> marcado(s) como perdido(s)</small>
+      </article>
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Plaquinhas ativas</div>
+        <div class="kpi"><%= stats.active_tags %></div>
+        <small class="muted">Vinculadas agora</small>
+      </article>
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Vendidas / ativadas</div>
+        <div class="kpi"><%= stats.sold_tags %></div>
+        <small class="muted">Ativadas ao menos uma vez</small>
+      </article>
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Leituras neste mês</div>
+        <div class="kpi"><%= stats.scans_this_month %></div>
+        <small class="muted">NFC, QR ou link</small>
+      </article>
+      <article class="card admin-stat-card">
+        <div class="admin-stat-label">Clientes sem tag ativa</div>
+        <div class="kpi"><%= stats.clients_without_active_tag %></div>
+        <small class="muted">Oportunidade de ativação</small>
+      </article>
+    </section>
+    <div class="admin-dashboard-columns">
+      <section class="card">
+        <div class="admin-section-header">
+          <div>
+            <h2>Clientes recentes</h2>
+            <p class="muted">Últimos cadastros no PetID.</p>
+          </div>
+          <a class="btn btn-light btn-sm" href="/admin/clients">Ver todos</a>
+        </div>
+        <% if (!recentClients.length) { %>
+          <div class="admin-empty">Ainda não há clientes cadastrados.</div>
+        <% } %>
+        <div class="admin-list-stack">
+          <% recentClients.forEach(client => { %>
+            <a class="admin-list-row" href="/admin/clients/<%= client.id %>">
+              <div>
+                <strong><%= client.name %></strong>
+                <div class="muted admin-small"><%= client.email %> · <%= fmtDate(client.created_at) %></div>
+              </div>
+              <div class="admin-row-metrics">
+                <span><strong><%= client.pet_count %></strong> pets</span>
+                <span><strong><%= client.active_tag_count %></strong> tags</span>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </section>
+      <section class="card">
+        <div class="admin-section-header">
+          <div>
+            <h2>Pets perdidos</h2>
+            <p class="muted">Casos que merecem atenção rápida.</p>
+          </div>
+          <span class="status <%= stats.lost_pets > 0 ? 'status-lost' : 'status-ok' %>"><%= stats.lost_pets %></span>
+        </div>
+        <% if (!lostPets.length) { %>
+          <div class="admin-empty">Nenhum pet está marcado como perdido.</div>
+        <% } %>
+        <div class="admin-list-stack">
+          <% lostPets.forEach(pet => { %>
+            <div class="admin-list-row">
+              <div class="admin-pet-row-main">
+                <% if (pet.photo_url) { %>
+                  <img class="admin-pet-thumb" src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+                <% } else { %>
+                  <div class="admin-pet-thumb admin-pet-thumb-empty">🐾</div>
+                <% } %>
+                <div>
+                  <strong><%= pet.name %></strong>
+                  <div class="muted admin-small">Tutor: <%= pet.user_name %></div>
+                </div>
+              </div>
+              <div class="admin-inline-actions">
+                <% if (pet.public_code) { %>
+                  <a class="btn btn-light btn-sm" href="/p/<%= pet.public_code %>" target="_blank" rel="noopener">Perfil</a>
+                <% } %>
+                <a class="btn btn-light btn-sm" href="/admin/clients/<%= pet.user_id %>">Cliente</a>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<%- include('footer') %>

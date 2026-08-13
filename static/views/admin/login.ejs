@@ -1,0 +1,34 @@
+<%- include('head', { title }) %>
+<section class="admin-login-wrap">
+  <div class="admin-login-card card">
+    <div class="logo-center">
+      <span class="brand-mark" style="width:54px;height:54px;border-radius:18px;font-size:26px">🐾</span>
+      <span class="eyebrow" style="margin-top:16px">Acesso restrito</span>
+      <h1 class="admin-login-title">Administração PetID</h1>
+      <p class="muted">Use as credenciais administrativas. As contas dos tutores não acessam esta área.</p>
+    </div>
+    <% if (error) { %>
+      <div class="flash flash-error"><%= error %></div>
+    <% } %>
+    <% if (!configured) { %>
+      <div class="admin-setup-note">
+        Configure <code>ADMIN_EMAIL</code> e <code>ADMIN_PASSWORD_HASH</code> no ambiente antes de entrar.
+      </div>
+    <% } %>
+    <form method="post" action="/admin/login">
+      <div class="field">
+        <label for="admin_email">E-mail administrativo</label>
+        <input id="admin_email" name="email" type="email" autocomplete="username" required autofocus>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label for="admin_password">Senha</label>
+        <input id="admin_password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%;margin-top:20px" <%= !configured ? 'disabled' : '' %>>Entrar no painel</button>
+    </form>
+    <div style="margin-top:18px;text-align:center">
+      <a class="muted" href="/">← Voltar ao PetID</a>
+    </div>
+  </div>
+</section>
+<%- include('footer') %>

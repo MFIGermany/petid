@@ -11,6 +11,7 @@ const dashboardRoutes = require('./routes/dashboard');
 const petRoutes = require('./routes/pets');
 const tagRoutes = require('./routes/tags');
 const publicRoutes = require('./routes/public');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3002);
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
             `${req.protocol}://${req.get('host')}`,
 
         currentUser: req.session?.user || null,
+        currentAdmin: req.session?.admin || null,
 
         currentPath: req.path,
         appName: 'PetID',
@@ -47,6 +49,7 @@ app.use('/', authRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/pets', petRoutes);
 app.use('/tags', tagRoutes);
+app.use('/admin', adminRoutes);
 app.use('/', publicRoutes);
 
 app.use((req, res) => {

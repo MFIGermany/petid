@@ -20,6 +20,9 @@
         </a>
 
         <div class="nav-actions nav-actions-desktop">
+            <% if (data.currentAdmin) { %>
+                <a class="btn btn-light" href="/admin">Admin</a>
+            <% } %>
             <% if (data.currentUser) { %>
                 <a class="btn btn-light" href="/dashboard">Meus pets</a>
                 <a class="btn btn-light" href="/tags/activate">Ativar plaquinha</a>
@@ -27,6 +30,9 @@
                     <button type="submit" class="btn btn-light">Sair</button>
                 </form>
             <% } else { %>
+                <% if (!data.currentAdmin) { %>
+                <a class="btn btn-light" href="/admin/login">Admin</a>
+                <% } %>
                 <a class="btn btn-light" href="/login">Entrar</a>
             <% } %>
         </div>
@@ -47,6 +53,9 @@
 
     <nav class="mobile-menu" id="mobileMenu" aria-label="Menu principal" data-mobile-menu hidden>
         <div class="container mobile-menu-inner">
+            <% if (data.currentAdmin) { %>
+                <a class="mobile-menu-link" href="/admin">Painel Admin</a>
+            <% } %>
             <% if (data.currentUser) { %>
                 <a class="mobile-menu-link" href="/dashboard">Meus pets</a>
                 <a class="mobile-menu-link" href="/tags/activate">Ativar plaquinha</a>

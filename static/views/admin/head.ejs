@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title><%= title ? `${title} | PetID Admin` : 'PetID Admin' %></title>
+  <link href="<%= data.baseUrl %>/css/petid.css" rel="stylesheet" type="text/css">
+  <script src="<%= data.baseUrl %>/js/petid.js" defer></script>
+</head>
+<body class="admin-body">
+<header class="admin-topbar">
+  <div class="container admin-nav">
+    <a class="brand" href="/admin" aria-label="PetID Admin">
+      <span class="brand-mark">🐾</span>
+      <span>PetID <small class="admin-brand-label">Admin</small></span>
+    </a>
+    <% if (data.currentAdmin) { %>
+      <div class="admin-nav-links">
+        <a class="admin-nav-link <%= data.currentPath === '/admin' ? 'is-active' : '' %>" href="/admin">Resumo</a>
+        <a class="admin-nav-link <%= data.currentPath.startsWith('/admin/clients') ? 'is-active' : '' %>" href="/admin/clients">Clientes</a>
+        <a class="admin-nav-link" href="/" target="_blank" rel="noopener">Ver site</a>
+        <form action="/admin/logout" method="post" style="margin:0">
+          <button class="btn btn-light btn-sm" type="submit">Sair</button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+</header>

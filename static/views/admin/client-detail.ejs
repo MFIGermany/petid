@@ -1,0 +1,226 @@
+<%- include('head', { title }) %>
+<%
+  const fmtDate = (value) => value ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium' }).format(new Date(value)) : '—';
+  const fmtDateTime = (value) => value ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value)) : '—';
+  const valueOrDash = (value) => String(value || '').trim() || '—';
+%>
+<section class="page admin-page">
+  <div class="container">
+    <div class="admin-breadcrumb"><a href="/admin/clients">← Clientes</a></div>
+    <div class="admin-page-header admin-client-header">
+      <div>
+        <span class="eyebrow">Ficha do cliente</span>
+        <h1><%= client.name %></h1>
+        <p class="muted">Cliente desde <%= fmtDate(client.created_at) %> · ID <span class="code"><%= client.id %></span></p>
+      </div>
+      <div class="admin-inline-actions">
+        <a class="btn btn-light" href="mailto:<%= client.email %>">Enviar e-mail</a>
+        <% if (client.phone) { %><a class="btn btn-light" href="tel:<%= client.phone %>">Ligar</a><% } %>
+      </div>
+    </div>
+    <% if (flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <section class="admin-client-stats">
+      <div class="card">
+        <div class="muted">Pets</div>
+        <div class="kpi"><%= client.pet_count %></div>
+      </div>
+      <div class="card">
+        <div class="muted">Tags ativas</div>
+        <div class="kpi"><%= client.active_tag_count %></div>
+      </div>
+      <div class="card">
+        <div class="muted">Vendidas/ativadas</div>
+        <div class="kpi"><%= client.sold_tag_count %></div>
+      </div>
+      <div class="card">
+        <div class="muted">Leituras totais</div>
+        <div class="kpi"><%= client.scan_count %></div>
+      </div>
+      <div class="card">
+        <div class="muted">Pets perdidos</div>
+        <div class="kpi"><%= client.lost_pet_count %></div>
+      </div>
+    </section>
+    <div class="admin-detail-grid">
+      <section class="card">
+        <div class="admin-section-header">
+          <div>
+            <h2>Dados do cliente</h2>
+            <p class="muted">Altere os dados principais da conta.</p>
+          </div>
+        </div>
+        <form method="post" action="/admin/clients/<%= client.id %>">
+          <div class="form-grid">
+            <div class="field">
+              <label>Nome</label>
+              <input name="name" value="<%= client.name %>" maxlength="160" required>
+            </div>
+            <div class="field">
+              <label>E-mail</label>
+              <input name="email" type="email" value="<%= client.email %>" maxlength="254" required>
+            </div>
+            <div class="field full">
+              <label>Telefone</label>
+              <input name="phone" value="<%= client.phone || '' %>" maxlength="60">
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:18px">
+            <button class="btn btn-primary" type="submit">Salvar cliente</button>
+          </div>
+        </form>
+      </section>
+      <section class="card admin-danger-card">
+        <h2>Zona de atenção</h2>
+        <p class="muted">Excluir a conta remove os pets e contatos. As plaquinhas são preservadas, desvinculadas e desativadas para manter o histórico físico.</p>
+        <form method="post" action="/admin/clients/<%= client.id %>/delete" data-confirm="Excluir definitivamente este cliente e todos os pets? As plaquinhas serão desativadas e preservadas.">
+          <button class="btn btn-danger" type="submit">Excluir cliente</button>
+        </form>
+      </section>
+    </div>
+    <section style="margin-top:24px">
+      <div class="admin-section-title-row">
+        <div>
+          <span class="eyebrow">Pets e identificações</span>
+          <h2 style="margin-top:10px">Pets do cliente</h2>
+        </div>
+        <span class="admin-number-pill"><%= pets.length %></span>
+      </div>
+      <% if (!pets.length) { %>
+        <div class="card admin-empty admin-empty-large">Este cliente ainda não cadastrou nenhum pet.</div>
+      <% } %>
+      <div class="admin-pets-stack">
+        <% pets.forEach(pet => { const petContacts = contactsByPet[String(pet.id)] || []; const petTags = tagsByPet[String(pet.id)] || []; %>
+          <article class="card admin-pet-card <%= pet.is_lost ? 'is-lost' : '' %>">
+            <div class="admin-pet-card-header">
+              <div class="admin-pet-identity">
+                <% if (pet.photo_url) { %>
+                  <img class="admin-pet-photo" src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+                <% } else { %>
+                  <div class="admin-pet-photo admin-pet-thumb-empty">🐾</div>
+                <% } %>
+                <div>
+                  <div class="pet-statuses">
+                    <span class="status <%= pet.is_lost ? 'status-lost' : 'status-ok' %>"><%= pet.is_lost ? 'Perdido' : 'Seguro' %></span>
+                    <span class="status <%= pet.active_public_code ? 'status-tag-active' : 'status-tag-inactive' %>"><%= pet.active_public_code ? 'Tag ativa' : 'Sem tag ativa' %></span>
+                  </div>
+                  <h2 style="margin:9px 0 2px"><%= pet.name %></h2>
+                  <div class="muted"><%= [pet.species, pet.breed, pet.sex].filter(Boolean).join(' · ') || 'Dados básicos não informados' %></div>
+                </div>
+              </div>
+              <div class="admin-inline-actions">
+                <% if (pet.active_public_code) { %>
+                  <a class="btn btn-light btn-sm" href="/p/<%= pet.active_public_code %>" target="_blank" rel="noopener">Perfil público</a>
+                <% } %>
+                <form method="post" action="/admin/pets/<%= pet.id %>/toggle-lost">
+                  <button class="btn <%= pet.is_lost ? 'btn-success' : 'btn-danger' %> btn-sm" type="submit"><%= pet.is_lost ? 'Marcar encontrado' : 'Marcar perdido' %></button>
+                </form>
+              </div>
+            </div>
+            <div class="admin-pet-data-grid">
+              <div>
+                <span>Data de nascimento</span>
+                <strong><%= pet.birth_date ? fmtDate(pet.birth_date) : '—' %></strong>
+              </div>
+              <div>
+                <span>Cor</span>
+                <strong><%= valueOrDash(pet.color) %></strong>
+              </div>
+              <div>
+                <span>Tags vinculadas</span>
+                <strong><%= pet.tag_count %></strong>
+              </div>
+              <div>
+                <span>Leituras</span>
+                <strong><%= pet.scan_count %> · <%= pet.scans_this_month %> neste mês</strong>
+              </div>
+              <div class="full">
+                <span>Condições médicas / alergias</span>
+                <strong><%= valueOrDash(pet.medical_conditions) %></strong>
+              </div>
+              <div class="full">
+                <span>Informações úteis</span>
+                <strong><%= valueOrDash(pet.notes) %></strong>
+              </div>
+            </div>
+            <div class="admin-subsection">
+              <h3>Contatos do pet</h3>
+              <% if (!petContacts.length) { %>
+                <div class="muted admin-small">Nenhum contato cadastrado.</div>
+              <% } else { %>
+                <div class="admin-contact-grid">
+                  <% petContacts.forEach(contact => { %>
+                    <div class="admin-contact-card">
+                      <strong><%= valueOrDash(contact.name) %></strong>
+                      <div class="muted admin-small"><%= valueOrDash(contact.relationship) %></div>
+                      <div style="margin-top:8px"><%= valueOrDash(contact.phone) %></div>
+                      <% if (contact.whatsapp && contact.whatsapp !== contact.phone) { %><div class="admin-small">WhatsApp: <%= contact.whatsapp %></div><% } %>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } %>
+            </div>
+            <div class="admin-subsection">
+              <h3>Plaquinhas</h3>
+              <% if (!petTags.length) { %>
+                <div class="muted admin-small">Nenhuma plaquinha vinculada.</div>
+              <% } else { %>
+                <div class="admin-tags-stack">
+                  <% petTags.forEach(tag => { %>
+                    <div class="admin-tag-row">
+                      <div>
+                        <div><span class="code"><%= tag.public_code || 'sem-código' %></span></div>
+                        <div class="muted admin-small" style="margin-top:6px">
+                          Ativada: <%= fmtDateTime(tag.activated_at) %> · Leituras: <%= tag.scan_count %> (<%= tag.scans_this_month %> neste mês)
+                        </div>
+                      </div>
+                      <div class="admin-inline-actions">
+                        <span class="status <%= tag.status === 'active' ? 'status-tag-active' : 'status-tag-inactive' %>"><%= tag.status === 'active' ? 'Ativa' : (tag.status === 'disabled' ? 'Desativada' : 'Estoque') %></span>
+                        <% if (tag.status === 'active' || tag.status === 'disabled') { %>
+                          <form method="post" action="/admin/tags/<%= tag.id %>/toggle-status" <%= tag.status === 'active' ? 'data-confirm="Desativar esta plaquinha? O perfil público deixará de abrir por este código."' : 'data-confirm="Reativar esta plaquinha? Se houver outra ativa para o pet, ela será desativada."' %>>
+                            <input type="hidden" name="user_id" value="<%= client.id %>">
+                            <button class="btn <%= tag.status === 'active' ? 'btn-light' : 'btn-primary' %> btn-sm" type="submit"><%= tag.status === 'active' ? 'Desativar' : 'Reativar' %></button>
+                          </form>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+    <section class="card" style="margin-top:24px">
+      <div class="admin-section-header">
+        <div>
+          <h2>Leituras recentes</h2>
+          <p class="muted">Últimos acessos registrados nas plaquinhas deste cliente.</p>
+        </div>
+      </div>
+      <% if (!scans.length) { %>
+        <div class="admin-empty">Ainda não há leituras registradas.</div>
+      <% } else { %>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Data</th><th>Pet</th><th>Tag</th><th>Origem</th><th>IP</th></tr></thead>
+            <tbody>
+              <% scans.forEach(scan => { %>
+                <tr>
+                  <td><%= fmtDateTime(scan.created_at) %></td>
+                  <td><strong><%= scan.pet_name %></strong></td>
+                  <td><span class="code"><%= scan.public_code %></span></td>
+                  <td><%= scan.source || 'unknown' %></td>
+                  <td class="muted"><%= scan.ip_address || '—' %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</section>
+<%- include('footer') %>

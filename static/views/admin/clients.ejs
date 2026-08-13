@@ -1,0 +1,90 @@
+<%- include('head', { title }) %>
+<% const fmtDate = (value) => value ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' }).format(new Date(value)) : '—'; %>
+<section class="page admin-page">
+  <div class="container">
+    <div class="admin-page-header">
+      <div>
+        <span class="eyebrow">Base de clientes</span>
+        <h1>Clientes</h1>
+        <p class="muted"><%= total %> cliente(s) encontrado(s).</p>
+      </div>
+    </div>
+    <% if (flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <form class="card admin-search-card" method="get" action="/admin/clients">
+      <div class="admin-search-row">
+        <div class="field admin-search-field">
+          <label for="q">Buscar cliente</label>
+          <input id="q" name="q" value="<%= query %>" placeholder="Nome, e-mail, telefone ou nome do pet">
+        </div>
+        <button class="btn btn-primary" type="submit">Buscar</button>
+        <% if (query) { %>
+          <a class="btn btn-light" href="/admin/clients">Limpar</a>
+        <% } %>
+      </div>
+    </form>
+    <section class="card admin-table-card">
+      <% if (!clients.length) { %>
+        <div class="admin-empty admin-empty-large">
+          <div style="font-size:38px">🔎</div>
+          <strong>Nenhum cliente encontrado</strong>
+          <div class="muted">Tente outro nome ou limpe a busca.</div>
+        </div>
+      <% } else { %>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Contato</th>
+                <th>Pets</th>
+                <th>Tags ativas</th>
+                <th>Vendidas/ativadas</th>
+                <th>Perdidos</th>
+                <th>Leituras</th>
+                <th>Cadastro</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% clients.forEach(client => { %>
+                <tr>
+                  <td>
+                    <strong><%= client.name %></strong>
+                    <div class="muted admin-small"><%= client.email %></div>
+                  </td>
+                  <td><%= client.phone || '—' %></td>
+                  <td><span class="admin-number-pill"><%= client.pet_count %></span></td>
+                  <td><span class="admin-number-pill admin-number-pill-active"><%= client.active_tag_count %></span></td>
+                  <td><%= client.sold_tag_count %></td>
+                  <td>
+                    <% if (Number(client.lost_pet_count) > 0) { %>
+                      <span class="status status-lost"><%= client.lost_pet_count %></span>
+                    <% } else { %>
+                      <span class="muted">0</span>
+                    <% } %>
+                  </td>
+                  <td><%= client.scan_count %></td>
+                  <td><%= fmtDate(client.created_at) %></td>
+                  <td class="admin-table-actions"><a class="btn btn-light btn-sm" href="/admin/clients/<%= client.id %>">Abrir</a></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% if (totalPages > 1) { %>
+          <nav class="admin-pagination" aria-label="Paginação de clientes">
+            <% const queryPart = query ? `&q=${encodeURIComponent(query)}` : ''; %>
+            <a class="admin-page-link <%= page <= 1 ? 'is-disabled' : '' %>" href="<%= page > 1 ? `/admin/clients?page=${page - 1}${queryPart}` : '#' %>">←</a>
+            <% pageItems.forEach(item => { %>
+              <a class="admin-page-link <%= item === page ? 'is-current' : '' %>" href="/admin/clients?page=<%= item %><%= queryPart %>"><%= item %></a>
+            <% }) %>
+            <a class="admin-page-link <%= page >= totalPages ? 'is-disabled' : '' %>" href="<%= page < totalPages ? `/admin/clients?page=${page + 1}${queryPart}` : '#' %>">→</a>
+          </nav>
+        <% } %>
+      <% } %>
+    </section>
+  </div>
+</section>
+<%- include('footer') %>

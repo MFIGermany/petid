@@ -17,7 +17,7 @@ function randomCode(length = 10) {
 }
 
 /**
- * Código público que fará parte da URL NFC/QR Code.
+ * Código público que fará parte da URL NFC.
  */
 function randomPublicCode() {
   return randomCode(10);

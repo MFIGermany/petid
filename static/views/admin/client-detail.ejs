@@ -205,15 +205,13 @@
       <% } else { %>
         <div class="admin-table-wrap">
           <table class="admin-table">
-            <thead><tr><th>Data</th><th>Pet</th><th>Tag</th><th>Origem</th><th>IP</th></tr></thead>
+            <thead><tr><th>Data</th><th>Pet</th><th>Tag</th></tr></thead>
             <tbody>
               <% scans.forEach(scan => { %>
                 <tr>
                   <td><%= fmtDateTime(scan.created_at) %></td>
                   <td><strong><%= scan.pet_name %></strong></td>
                   <td><span class="code"><%= scan.public_code %></span></td>
-                  <td><%= scan.source || 'unknown' %></td>
-                  <td class="muted"><%= scan.ip_address || '—' %></td>
                 </tr>
               <% }) %>
             </tbody>

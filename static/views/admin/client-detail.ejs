@@ -96,7 +96,7 @@
             <div class="admin-pet-card-header">
               <div class="admin-pet-identity">
                 <% if (pet.photo_url) { %>
-                  <img class="admin-pet-photo" src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+                  <img class="admin-pet-photo pet-photo-lightbox-trigger" src="<%= pet.photo_url %>" alt="<%= pet.name %>" data-pet-lightbox tabindex="0" role="button" aria-label="Ampliar foto de <%= pet.name %>" title="Toque para ampliar">
                 <% } else { %>
                   <div class="admin-pet-photo admin-pet-thumb-empty">🐾</div>
                 <% } %>

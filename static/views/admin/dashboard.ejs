@@ -88,7 +88,7 @@
             <div class="admin-list-row">
               <div class="admin-pet-row-main">
                 <% if (pet.photo_url) { %>
-                  <img class="admin-pet-thumb" src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+                  <img class="admin-pet-thumb pet-photo-lightbox-trigger" src="<%= pet.photo_url %>" alt="<%= pet.name %>" data-pet-lightbox tabindex="0" role="button" aria-label="Ampliar foto de <%= pet.name %>" title="Toque para ampliar">
                 <% } else { %>
                   <div class="admin-pet-thumb admin-pet-thumb-empty">🐾</div>
                 <% } %>

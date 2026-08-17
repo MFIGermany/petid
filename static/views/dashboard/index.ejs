@@ -30,7 +30,7 @@
         <article class="card">
           <div class="pet-mini">
             <% if (pet.photo_url) { %>
-            <img src="<%= pet.photo_url %>" alt="<%= pet.name %>">
+            <img class="pet-photo-lightbox-trigger" src="<%= pet.photo_url %>" alt="<%= pet.name %>" data-pet-lightbox tabindex="0" role="button" aria-label="Ampliar foto de <%= pet.name %>" title="Toque para ampliar">
             <% } else { %>
             <div class="pet-avatar" style="width:70px;height:70px;border-radius:20px;display:grid;place-items:center;font-size:30px">🐾</div>
             <% } %>

@@ -98,3 +98,91 @@ label{font-size:.9rem;font-weight:750}input,select,textarea{width:100%;border:1p
 @media(max-width:980px){.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.admin-dashboard-columns,.admin-detail-grid{grid-template-columns:1fr}.admin-client-stats{grid-template-columns:repeat(3,1fr)}.admin-pet-data-grid{grid-template-columns:repeat(2,1fr)}.admin-contact-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.admin-nav{align-items:flex-start;padding-top:12px;padding-bottom:12px;flex-direction:column}.admin-nav-links{width:100%;overflow:auto;padding-bottom:2px}.admin-page-header,.admin-client-header,.admin-pet-card-header{align-items:flex-start;flex-direction:column}.admin-search-row{align-items:stretch;flex-direction:column}.admin-search-row .btn{width:100%}.admin-client-stats{grid-template-columns:repeat(2,1fr)}.admin-pet-identity{align-items:flex-start}.admin-tag-row{align-items:flex-start;flex-direction:column}.admin-contact-grid{grid-template-columns:1fr}}
 @media(max-width:520px){.admin-stats-grid,.admin-client-stats,.admin-pet-data-grid{grid-template-columns:1fr}.admin-pet-data-grid>div.full{grid-column:auto}.admin-pet-identity{flex-direction:column}.admin-pet-photo{width:78px;height:78px}.admin-inline-actions{width:100%}.admin-inline-actions .btn,.admin-inline-actions form,.admin-inline-actions form .btn{width:100%}}
+
+
+/* Ampliação da foto do pet */
+.pet-photo-lightbox-trigger{
+  cursor:zoom-in;
+  -webkit-tap-highlight-color:transparent;
+}
+.pet-photo-lightbox-trigger:focus-visible{
+  outline:3px solid rgba(79,70,229,.38);
+  outline-offset:3px;
+}
+body.pet-photo-lightbox-open{
+  overflow:hidden;
+}
+.pet-photo-lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  padding:72px 22px 28px;
+  background:rgba(15,23,42,.86);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.pet-photo-lightbox[hidden]{
+  display:none!important;
+}
+.pet-photo-lightbox-content{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+}
+.pet-photo-lightbox-image{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:min(94vw,1100px);
+  max-height:84vh;
+  object-fit:contain;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 24px 80px rgba(0,0,0,.42);
+}
+.pet-photo-lightbox-close{
+  position:fixed;
+  top:max(16px,env(safe-area-inset-top));
+  right:max(16px,env(safe-area-inset-right));
+  z-index:10000;
+  width:40px;
+  height:40px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  padding:0 0 7px;
+  background:rgba(17,24,39,.7);
+  color:#fff;
+  font-size:32px;
+  line-height:1;
+  font-weight:400;
+  cursor:pointer;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+.pet-photo-lightbox-close:hover{
+  background:rgba(17,24,39,.92);
+}
+.pet-photo-lightbox-close:focus-visible{
+  outline:3px solid rgba(255,255,255,.72);
+  outline-offset:3px;
+}
+@media(max-width:620px){
+  .pet-photo-lightbox{
+    padding:68px 12px 20px;
+  }
+  .pet-photo-lightbox-image{
+    max-width:96vw;
+    max-height:82vh;
+    border-radius:14px;
+  }
+  .pet-photo-lightbox-close{
+    width:44px;
+    height:44px;
+    top:max(12px,env(safe-area-inset-top));
+    right:max(12px,env(safe-area-inset-right));
+  }
+}

@@ -8,7 +8,7 @@
     <section class="card">
       <div class="pet-profile">
         <% if (pet.photo_url) { %>
-        <img class="pet-avatar" src="<%= pet.photo_url %>" alt="Foto de <%= pet.name %>" loading="eager" referrerpolicy="no-referrer">
+        <img class="pet-avatar pet-photo-lightbox-trigger" src="<%= pet.photo_url %>" alt="Foto de <%= pet.name %>" loading="eager" referrerpolicy="no-referrer" data-pet-lightbox tabindex="0" role="button" aria-label="Ampliar foto de <%= pet.name %>" title="Toque para ampliar">
         <% } else { %>
         <div class="pet-avatar" style="display:grid;place-items:center;font-size:48px">🐾</div>
         <% } %>
